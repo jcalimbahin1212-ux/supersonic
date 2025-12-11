@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Watch - SuperSonic</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/pages.css">
-    <link rel="stylesheet" href="../css/player.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/player.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -14,25 +14,25 @@
     <header class="main-header">
         <div class="header-container">
             <div class="logo">
-                <a href="../index.html">
+                <a href="/">
                     <span class="logo-super">Super</span><span class="logo-sonic">Sonic</span>
                 </a>
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
-                    <li><a href="series.html"><i class="fas fa-tv"></i> Series</a></li>
-                    <li><a href="games.html"><i class="fas fa-gamepad"></i> Games</a></li>
-                    <li><a href="comics.html"><i class="fas fa-book"></i> Comics</a></li>
-                    <li><a href="gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
-                    <li><a href="fanmade.html"><i class="fas fa-heart"></i> Fan Made</a></li>
+                    <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/pages/movies.html"><i class="fas fa-film"></i> Movies</a></li>
+                    <li><a href="/pages/series.html"><i class="fas fa-tv"></i> Series</a></li>
+                    <li><a href="/pages/games.html"><i class="fas fa-gamepad"></i> Games</a></li>
+                    <li><a href="/pages/comics.html"><i class="fas fa-book"></i> Comics</a></li>
+                    <li><a href="/pages/gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="/pages/fanmade.html"><i class="fas fa-heart"></i> Fan Made</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
                 <div class="user-menu">
                     <button id="themeToggle"><i class="fas fa-moon"></i></button>
-                    <a href="profile.html" class="profile-btn"><i class="fas fa-user"></i></a>
+                    <a href="/pages/profile.html" class="profile-btn"><i class="fas fa-user"></i></a>
                 </div>
             </div>
             <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
@@ -114,8 +114,8 @@
         </div>
     </footer>
 
-    <script src="../js/data.js"></script>
-    <script src="../js/app.js"></script>
+    <script src="/js/data.js"></script>
+    <script src="/js/app.js"></script>
     <script>
         let currentContent = null;
         let currentEpisode = null;
@@ -189,6 +189,9 @@
             const playerFrame = document.getElementById('playerFrame');
             const loading = document.querySelector('.player-loading');
             
+            // Store current movie for server switching
+            window.currentMovie = movie;
+            
             if (movie.embedUrl) {
                 playerFrame.src = movie.embedUrl;
                 playerFrame.onload = () => {
@@ -248,6 +251,9 @@
             
             currentEpisode = ep;
             
+            // Store current episode for server switching
+            window.currentEpisode = ep;
+            
             const playerFrame = document.getElementById('playerFrame');
             const loading = document.querySelector('.player-loading');
             
@@ -281,8 +287,32 @@
                     serverBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     
-                    // In a real implementation, this would switch to different embed sources
-                    console.log('Switched to server', btn.dataset.server);
+                    const serverNum = btn.dataset.server;
+                    const playerFrame = document.getElementById('playerFrame');
+                    const loading = document.querySelector('.player-loading');
+                    
+                    // Get current content
+                    const content = window.currentMovie || window.currentEpisode;
+                    if (!content) return;
+                    
+                    // Switch embed source based on server
+                    let embedUrl = null;
+                    if (serverNum === '1') {
+                        embedUrl = content.embedUrl;
+                    } else if (serverNum === '2') {
+                        embedUrl = content.embedUrl2 || content.embedUrl;
+                    } else if (serverNum === '3') {
+                        embedUrl = content.embedUrl3 || content.embedUrl;
+                    }
+                    
+                    if (embedUrl) {
+                        loading.style.display = 'flex';
+                        loading.innerHTML = '<div class="sonic-loader"></div><p>Switching server...</p>';
+                        playerFrame.src = embedUrl;
+                        playerFrame.onload = () => {
+                            loading.style.display = 'none';
+                        };
+                    }
                 });
             });
         }
