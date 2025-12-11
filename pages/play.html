@@ -221,35 +221,54 @@
                         <i class="fas fa-gamepad"></i>
                         <h3>${game.title}</h3>
                         <p>This game requires the ${game.platform} emulator.</p>
-                        <p class="rom-notice">To play, you'll need to upload your own ROM file.</p>
-                        <label class="btn btn-primary rom-upload">
-                            <i class="fas fa-upload"></i> Upload ROM
-                            <input type="file" id="romUpload" accept=".bin,.md,.smd,.gen,.iso,.cue,.gba,.sfc,.smc,.nes" style="display:none">
-                        </label>
+                        <p class="rom-notice">Emulator not available for this platform.</p>
                     </div>
                 `;
-                
-                document.getElementById('romUpload')?.addEventListener('change', handleRomUpload);
                 return;
             }
             
-            // Show upload prompt for ROM
-            loading.innerHTML = `
-                <div class="emulator-placeholder">
-                    <i class="fas fa-gamepad"></i>
-                    <h3>${game.title}</h3>
-                    <p>Ready to play! Upload your ROM file to start.</p>
-                    <label class="btn btn-primary rom-upload">
-                        <i class="fas fa-upload"></i> Upload ROM
-                        <input type="file" id="romUpload" accept=".bin,.md,.smd,.gen,.zip" style="display:none">
-                    </label>
-                    <p class="rom-legal">Only use ROM files you legally own.</p>
-                </div>
-            `;
-            
-            document.getElementById('romUpload')?.addEventListener('change', (e) => {
-                handleRomUpload(e, core);
-            });
+            // Check if game has a ROM URL (pre-loaded)
+            if (game.romUrl && game.romUrl.startsWith('http')) {
+                // Auto-load ROM from URL
+                loading.innerHTML = '<div class="sonic-loader"></div><p>Loading game...</p>';
+                
+                container.innerHTML = `<div id="game" style="width:100%;height:100%;"></div>`;
+                
+                // Initialize EmulatorJS with remote ROM
+                window.EJS_player = '#game';
+                window.EJS_core = core;
+                window.EJS_gameUrl = game.romUrl;
+                window.EJS_pathtodata = 'https://www.emulatorjs.com/data/';
+                window.EJS_startOnLoaded = true;
+                window.EJS_color = '#1e90ff';
+                window.EJS_backgroundColor = '#0a0a0a';
+                
+                // Load EmulatorJS
+                const script = document.createElement('script');
+                script.src = 'https://www.emulatorjs.com/data/loader.js';
+                script.onload = () => {
+                    loading.style.display = 'none';
+                };
+                document.body.appendChild(script);
+            } else {
+                // Fallback: Show upload prompt for ROM
+                loading.innerHTML = `
+                    <div class="emulator-placeholder">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>${game.title}</h3>
+                        <p>ROM not available. Upload your own ROM file to play.</p>
+                        <label class="btn btn-primary rom-upload">
+                            <i class="fas fa-upload"></i> Upload ROM
+                            <input type="file" id="romUpload" accept=".bin,.md,.smd,.gen,.zip" style="display:none">
+                        </label>
+                        <p class="rom-legal">Only use ROM files you legally own.</p>
+                    </div>
+                `;
+                
+                document.getElementById('romUpload')?.addEventListener('change', (e) => {
+                    handleRomUpload(e, core);
+                });
+            }
         }
 
         function handleRomUpload(event, core = 'genesis_plus_gx') {
@@ -290,6 +309,8 @@
 
         function showGameUnavailable(game) {
             const loading = document.querySelector('.player-loading');
+            const externalLink = game.externalLink || `https://store.steampowered.com/search/?term=${encodeURIComponent(game.title)}`;
+            
             loading.innerHTML = `
                 <div class="game-unavailable">
                     <img src="${game.poster}" alt="${game.title}">
@@ -297,8 +318,8 @@
                     <p>This modern game cannot be emulated in browser.</p>
                     <p>Available on: ${game.platform}</p>
                     <div class="purchase-links">
-                        <a href="https://store.steampowered.com/search/?term=${encodeURIComponent(game.title)}" target="_blank" class="btn btn-secondary">
-                            <i class="fab fa-steam"></i> Steam
+                        <a href="${externalLink}" target="_blank" class="btn btn-primary">
+                            <i class="fab fa-steam"></i> Get on Steam
                         </a>
                         <a href="https://www.xbox.com/search?q=${encodeURIComponent(game.title)}" target="_blank" class="btn btn-secondary">
                             <i class="fab fa-xbox"></i> Xbox

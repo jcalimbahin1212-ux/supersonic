@@ -170,7 +170,7 @@ const sonicData = {
             description: "The classic that started it all! Run through Green Hill Zone and defeat Dr. Robotnik.",
             poster: "https://upload.wikimedia.org/wikipedia/en/b/ba/Sonic_the_Hedgehog_1_Genesis_box_art.jpg",
             emulator: "genesis",
-            romUrl: "sonic1",
+            romUrl: "https://archive.org/download/sonic-the-hedgehog-usa-europe/Sonic%20The%20Hedgehog%20%28USA%2C%20Europe%29.md",
             category: "classic"
         },
         {
@@ -182,7 +182,7 @@ const sonicData = {
             description: "Sonic and Tails team up to stop Dr. Robotnik's Death Egg.",
             poster: "https://upload.wikimedia.org/wikipedia/en/0/0c/Sonic_2_US_Cover.jpg",
             emulator: "genesis",
-            romUrl: "sonic2",
+            romUrl: "https://archive.org/download/sonic-the-hedgehog-2-usa/Sonic%20The%20Hedgehog%202%20%28USA%29.md",
             category: "classic"
         },
         {
@@ -194,7 +194,7 @@ const sonicData = {
             description: "The ultimate classic Sonic experience with multiple playable characters.",
             poster: "https://upload.wikimedia.org/wikipedia/en/6/66/Sonic3-box-us-225.jpg",
             emulator: "genesis",
-            romUrl: "sonic3k",
+            romUrl: "https://archive.org/download/sonic-knuckles-sonic-3-usa/Sonic%20%26%20Knuckles%20%2B%20Sonic%20The%20Hedgehog%203%20%28USA%29.md",
             category: "classic"
         },
         {
@@ -206,7 +206,7 @@ const sonicData = {
             description: "Travel through time to save Amy Rose and defeat Metal Sonic.",
             poster: "https://upload.wikimedia.org/wikipedia/en/5/55/Sonic_CD_cover.jpg",
             emulator: "segacd",
-            romUrl: "soniccd",
+            romUrl: "https://archive.org/download/SegaCDUSA/Sonic%20CD%20%28USA%29.zip",
             category: "classic"
         },
         {
@@ -218,7 +218,7 @@ const sonicData = {
             description: "Sonic's first 3D adventure with multiple playable characters.",
             poster: "https://upload.wikimedia.org/wikipedia/en/thumb/6/60/Sonic_Adventure.PNG/220px-Sonic_Adventure.PNG",
             emulator: "dreamcast",
-            romUrl: "sonicadv",
+            romUrl: "https://archive.org/download/redump.dc.p2/Sonic%20Adventure%20%28USA%29.zip",
             category: "adventure"
         },
         {
@@ -230,7 +230,7 @@ const sonicData = {
             description: "Hero vs Dark story featuring Shadow the Hedgehog's debut.",
             poster: "https://upload.wikimedia.org/wikipedia/en/9/99/Sonic_Adventure_2_cover.png",
             emulator: "dreamcast",
-            romUrl: "sonicadv2",
+            romUrl: "https://archive.org/download/redump.dc.p2/Sonic%20Adventure%202%20%28USA%29.zip",
             category: "adventure"
         },
         {
@@ -241,9 +241,10 @@ const sonicData = {
             rating: 9.3,
             description: "A love letter to classic Sonic with new and remixed zones.",
             poster: "https://upload.wikimedia.org/wikipedia/en/8/8e/Sonic_Mania_%28artwork%29.jpg",
-            emulator: "html5",
-            romUrl: "https://example.com/mania",
-            category: "modern"
+            emulator: "none",
+            romUrl: "",
+            category: "modern",
+            externalLink: "https://store.steampowered.com/app/584400/Sonic_Mania/"
         },
         {
             id: "sonicfrontiers",
@@ -255,10 +256,11 @@ const sonicData = {
             poster: "https://upload.wikimedia.org/wikipedia/en/0/00/Sonic_Frontiers_Key_Art.jpg",
             emulator: "none",
             romUrl: "",
-            category: "modern"
+            category: "modern",
+            externalLink: "https://store.steampowered.com/app/1237320/Sonic_Frontiers/"
         },
         {
-            id: "sonicsuperstars",
+            id: "superstars",
             title: "Sonic Superstars",
             year: 2023,
             platform: "Multi-Platform",
@@ -268,7 +270,32 @@ const sonicData = {
             emulator: "none",
             romUrl: "",
             category: "modern",
+            externalLink: "https://store.steampowered.com/app/2259190/SONIC_SUPERSTARS/",
             isNew: true
+        },
+        {
+            id: "sonicspinball",
+            title: "Sonic Spinball",
+            year: 1993,
+            platform: "Genesis/Mega Drive",
+            rating: 7.5,
+            description: "Pinball action with Sonic as the ball! Navigate through four pinball tables.",
+            poster: "https://upload.wikimedia.org/wikipedia/en/2/2c/Sonic_Spinball_Box.jpeg",
+            emulator: "genesis",
+            romUrl: "https://archive.org/download/sonic-the-hedgehog-spinball-usa/Sonic%20The%20Hedgehog%20Spinball%20%28USA%29.md",
+            category: "classic"
+        },
+        {
+            id: "sonic3dblast",
+            title: "Sonic 3D Blast",
+            year: 1996,
+            platform: "Genesis/Mega Drive",
+            rating: 6.5,
+            description: "Isometric platformer where Sonic must rescue Flickies.",
+            poster: "https://upload.wikimedia.org/wikipedia/en/d/df/Sonic_3D_Blast.jpg",
+            emulator: "genesis",
+            romUrl: "https://archive.org/download/sonic-3d-blast-usa/Sonic%203D%20Blast%20%28USA%29.md",
+            category: "classic"
         }
     ],
 
