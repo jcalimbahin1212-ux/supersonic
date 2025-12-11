@@ -362,7 +362,7 @@
             const games = sonicData.games.filter(g => g.id !== currentId).slice(0, 4);
             
             container.innerHTML = games.map(game => `
-                <a href="play.html?id=${game.id}" class="content-card">
+                <a href="/pages/play.html?id=${game.id}" class="content-card">
                     <div class="card-image">
                         <img src="${game.poster}" alt="${game.title}" onerror="this.src='https://via.placeholder.com/200x280?text=No+Image'">
                         <div class="play-overlay">

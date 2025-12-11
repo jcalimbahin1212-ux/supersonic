@@ -150,7 +150,7 @@
             countEl.textContent = series.length;
             
             container.innerHTML = series.map(show => `
-                <a href="watch.html?id=${show.id}&type=series" class="content-card large-card fade-in">
+                <a href="/pages/watch.html?id=${show.id}&type=series" class="content-card large-card fade-in">
                     <div class="card-image">
                         ${show.isNew ? '<span class="type-badge">NEW</span>' : ''}
                         <img src="${show.poster}" alt="${show.title}" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">

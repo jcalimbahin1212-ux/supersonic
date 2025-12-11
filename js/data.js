@@ -14,9 +14,9 @@ const sonicData = {
             backdrop: "https://image.tmdb.org/t/p/original/tCUcf3oNWMW8kwAj3NI1xqpNsJj.jpg",
             genres: ["Action", "Adventure", "Comedy", "Family"],
             cast: ["Ben Schwartz", "James Marsden", "Jim Carrey"],
-            embedUrl: "https://vidsrc.pro/embed/movie/tt3794354",
-            embedUrl2: "https://vidsrc.cc/v2/embed/movie/tt3794354",
-            embedUrl3: "https://www.2embed.cc/embed/tt3794354"
+            embedUrl: "https://vidsrc.icu/embed/movie/tt3794354",
+            embedUrl2: "https://vidsrc.to/embed/movie/tt3794354",
+            embedUrl3: "https://multiembed.mov/?video_id=tt3794354&tmdb=1"
         },
         {
             id: "sonic2",
@@ -29,9 +29,9 @@ const sonicData = {
             backdrop: "https://image.tmdb.org/t/p/original/egoyMDLqCxzjnSrWOz50uLlJWmD.jpg",
             genres: ["Action", "Adventure", "Comedy", "Family"],
             cast: ["Ben Schwartz", "James Marsden", "Jim Carrey", "Idris Elba"],
-            embedUrl: "https://vidsrc.pro/embed/movie/tt12412888",
-            embedUrl2: "https://vidsrc.cc/v2/embed/movie/tt12412888",
-            embedUrl3: "https://www.2embed.cc/embed/tt12412888"
+            embedUrl: "https://vidsrc.icu/embed/movie/tt12412888",
+            embedUrl2: "https://vidsrc.to/embed/movie/tt12412888",
+            embedUrl3: "https://multiembed.mov/?video_id=tt12412888&tmdb=1"
         },
         {
             id: "sonic3",
@@ -44,9 +44,9 @@ const sonicData = {
             backdrop: "https://image.tmdb.org/t/p/original/b85bJfrHwV4Kb4eSXHdqNnWgNjL.jpg",
             genres: ["Action", "Adventure", "Comedy", "Family"],
             cast: ["Ben Schwartz", "Keanu Reeves", "Jim Carrey", "Idris Elba"],
-            embedUrl: "https://vidsrc.pro/embed/movie/tt14357938",
-            embedUrl2: "https://vidsrc.cc/v2/embed/movie/tt14357938",
-            embedUrl3: "https://www.2embed.cc/embed/tt14357938",
+            embedUrl: "https://vidsrc.icu/embed/movie/tt14357938",
+            embedUrl2: "https://vidsrc.to/embed/movie/tt14357938",
+            embedUrl3: "https://multiembed.mov/?video_id=tt14357938&tmdb=1",
             isNew: true
         },
         {
@@ -78,14 +78,14 @@ const sonicData = {
             backdrop: "https://image.tmdb.org/t/p/original/fkNl4r3p5RxCZ6PqD0eeF5qgKNe.jpg",
             genres: ["Animation", "Action", "Adventure"],
             episodeList: [
-                { season: 1, episode: 1, title: "Shattered", embedUrl: "https://vidsrc.pro/embed/tv/tt14174916/1/1", embedUrl2: "https://vidsrc.cc/v2/embed/tv/tt14174916/1/1", embedUrl3: "https://www.2embed.cc/embedtv/tt14174916&s=1&e=1" },
-                { season: 1, episode: 2, title: "The Yoke's on You", embedUrl: "https://vidsrc.pro/embed/tv/tt14174916/1/2", embedUrl2: "https://vidsrc.cc/v2/embed/tv/tt14174916/1/2", embedUrl3: "https://www.2embed.cc/embedtv/tt14174916&s=1&e=2" },
-                { season: 1, episode: 3, title: "Escape from New Yoke City", embedUrl: "https://vidsrc.pro/embed/tv/tt14174916/1/3", embedUrl2: "https://vidsrc.cc/v2/embed/tv/tt14174916/1/3", embedUrl3: "https://www.2embed.cc/embedtv/tt14174916&s=1&e=3" },
-                { season: 1, episode: 4, title: "Avoid the Void", embedUrl: "https://vidsrc.pro/embed/tv/tt14174916/1/4", embedUrl2: "https://vidsrc.cc/v2/embed/tv/tt14174916/1/4", embedUrl3: "https://www.2embed.cc/embedtv/tt14174916&s=1&e=4" },
-                { season: 1, episode: 5, title: "No Escape", embedUrl: "https://vidsrc.pro/embed/tv/tt14174916/1/5", embedUrl2: "https://vidsrc.cc/v2/embed/tv/tt14174916/1/5", embedUrl3: "https://www.2embed.cc/embedtv/tt14174916&s=1&e=5" },
-                { season: 1, episode: 6, title: "Welcome to the Jungle", embedUrl: "https://vidsrc.pro/embed/tv/tt14174916/1/6", embedUrl2: "https://vidsrc.cc/v2/embed/tv/tt14174916/1/6", embedUrl3: "https://www.2embed.cc/embedtv/tt14174916&s=1&e=6" },
-                { season: 1, episode: 7, title: "Second Wind", embedUrl: "https://vidsrc.pro/embed/tv/tt14174916/1/7", embedUrl2: "https://vidsrc.cc/v2/embed/tv/tt14174916/1/7", embedUrl3: "https://www.2embed.cc/embedtv/tt14174916&s=1&e=7" },
-                { season: 1, episode: 8, title: "Friend or Foe", embedUrl: "https://vidsrc.pro/embed/tv/tt14174916/1/8", embedUrl2: "https://vidsrc.cc/v2/embed/tv/tt14174916/1/8", embedUrl3: "https://www.2embed.cc/embedtv/tt14174916&s=1&e=8" }
+                { season: 1, episode: 1, title: "Shattered", embedUrl: "https://vidsrc.icu/embed/tv/tt14174916/1/1", embedUrl2: "https://vidsrc.to/embed/tv/tt14174916/1/1", embedUrl3: "https://multiembed.mov/?video_id=tt14174916&tmdb=1&s=1&e=1" },
+                { season: 1, episode: 2, title: "The Yoke's on You", embedUrl: "https://vidsrc.icu/embed/tv/tt14174916/1/2", embedUrl2: "https://vidsrc.to/embed/tv/tt14174916/1/2", embedUrl3: "https://multiembed.mov/?video_id=tt14174916&tmdb=1&s=1&e=2" },
+                { season: 1, episode: 3, title: "Escape from New Yoke City", embedUrl: "https://vidsrc.icu/embed/tv/tt14174916/1/3", embedUrl2: "https://vidsrc.to/embed/tv/tt14174916/1/3", embedUrl3: "https://multiembed.mov/?video_id=tt14174916&tmdb=1&s=1&e=3" },
+                { season: 1, episode: 4, title: "Avoid the Void", embedUrl: "https://vidsrc.icu/embed/tv/tt14174916/1/4", embedUrl2: "https://vidsrc.to/embed/tv/tt14174916/1/4", embedUrl3: "https://multiembed.mov/?video_id=tt14174916&tmdb=1&s=1&e=4" },
+                { season: 1, episode: 5, title: "No Escape", embedUrl: "https://vidsrc.icu/embed/tv/tt14174916/1/5", embedUrl2: "https://vidsrc.to/embed/tv/tt14174916/1/5", embedUrl3: "https://multiembed.mov/?video_id=tt14174916&tmdb=1&s=1&e=5" },
+                { season: 1, episode: 6, title: "Welcome to the Jungle", embedUrl: "https://vidsrc.icu/embed/tv/tt14174916/1/6", embedUrl2: "https://vidsrc.to/embed/tv/tt14174916/1/6", embedUrl3: "https://multiembed.mov/?video_id=tt14174916&tmdb=1&s=1&e=6" },
+                { season: 1, episode: 7, title: "Second Wind", embedUrl: "https://vidsrc.icu/embed/tv/tt14174916/1/7", embedUrl2: "https://vidsrc.to/embed/tv/tt14174916/1/7", embedUrl3: "https://multiembed.mov/?video_id=tt14174916&tmdb=1&s=1&e=7" },
+                { season: 1, episode: 8, title: "Friend or Foe", embedUrl: "https://vidsrc.icu/embed/tv/tt14174916/1/8", embedUrl2: "https://vidsrc.to/embed/tv/tt14174916/1/8", embedUrl3: "https://multiembed.mov/?video_id=tt14174916&tmdb=1&s=1&e=8" }
             ],
             isNew: true
         },

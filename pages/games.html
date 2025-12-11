@@ -165,7 +165,7 @@
             container.innerHTML = games.map(game => {
                 const isPlayable = game.emulator !== 'none';
                 return `
-                    <a href="${isPlayable ? `play.html?id=${game.id}` : '#'}" class="content-card large-card fade-in ${!isPlayable ? 'not-playable' : ''}">
+                    <a href="${isPlayable ? `/pages/play.html?id=${game.id}` : '#'}" class="content-card large-card fade-in ${!isPlayable ? 'not-playable' : ''}">
                         <div class="card-image">
                             ${game.isNew ? '<span class="type-badge">NEW</span>' : ''}
                             ${!isPlayable ? '<span class="type-badge unavailable">INFO ONLY</span>' : ''}

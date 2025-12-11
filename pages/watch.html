@@ -353,7 +353,7 @@
             items = items.filter(i => i.id !== currentContent?.id).slice(0, 4);
             
             container.innerHTML = items.map(item => `
-                <a href="watch.html?id=${item.id}${type === 'series' ? '&type=series' : ''}" class="content-card">
+                <a href="/pages/watch.html?id=${item.id}${type === 'series' ? '&type=series' : ''}" class="content-card">
                     <div class="card-image">
                         <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/200x280?text=No+Image'">
                         <div class="play-overlay">

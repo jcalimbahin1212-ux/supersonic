@@ -136,7 +136,7 @@
             countEl.textContent = movies.length;
             
             container.innerHTML = movies.map(movie => `
-                <a href="watch.html?id=${movie.id}" class="content-card large-card fade-in">
+                <a href="/pages/watch.html?id=${movie.id}" class="content-card large-card fade-in">
                     <div class="card-image">
                         ${movie.isNew ? '<span class="type-badge">NEW</span>' : ''}
                         <img src="${movie.poster}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
