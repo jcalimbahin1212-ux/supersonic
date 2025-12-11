@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Series - SuperSonic</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-super">Super</span><span class="logo-sonic">Sonic</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+                    <li><a href="series.html" class="active"><i class="fas fa-tv"></i> Series</a></li>
+                    <li><a href="games.html"><i class="fas fa-gamepad"></i> Games</a></li>
+                    <li><a href="comics.html"><i class="fas fa-book"></i> Comics</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="fanmade.html"><i class="fas fa-heart"></i> Fan Made</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search series...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-menu">
+                    <button id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <a href="profile.html" class="profile-btn"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg" style="background-image: url('https://image.tmdb.org/t/p/original/fkNl4r3p5RxCZ6PqD0eeF5qgKNe.jpg');"></div>
+        <div class="page-hero-content">
+            <h1><i class="fas fa-tv"></i> Sonic TV Series</h1>
+            <p>Watch all Sonic animated series and shows</p>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label>Sort By:</label>
+                    <select id="sortSelect">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="title">A-Z</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Era:</label>
+                    <select id="eraSelect">
+                        <option value="all">All Eras</option>
+                        <option value="classic">Classic (90s)</option>
+                        <option value="modern">Modern (2000s+)</option>
+                    </select>
+                </div>
+                <div class="results-count">
+                    <span id="resultsCount">0</span> series found
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Series Grid -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-grid large-grid" id="seriesGrid">
+                <!-- Series loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperSonic. Sonic the Hedgehog is a trademark of SEGA.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSeries();
+            initFilters();
+        });
+
+        function loadSeries(sortBy = 'newest', filterEra = 'all') {
+            const container = document.getElementById('seriesGrid');
+            const countEl = document.getElementById('resultsCount');
+            
+            let series = [...sonicData.series];
+            
+            // Sort
+            switch(sortBy) {
+                case 'oldest':
+                    series.sort((a, b) => {
+                        const yearA = parseInt(a.year.toString().split('-')[0]);
+                        const yearB = parseInt(b.year.toString().split('-')[0]);
+                        return yearA - yearB;
+                    });
+                    break;
+                case 'rating':
+                    series.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'title':
+                    series.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                default:
+                    series.sort((a, b) => {
+                        const yearA = parseInt(a.year.toString().split('-')[0]);
+                        const yearB = parseInt(b.year.toString().split('-')[0]);
+                        return yearB - yearA;
+                    });
+            }
+            
+            // Filter
+            if (filterEra === 'classic') {
+                series = series.filter(s => {
+                    const year = parseInt(s.year.toString().split('-')[0]);
+                    return year < 2000;
+                });
+            } else if (filterEra === 'modern') {
+                series = series.filter(s => {
+                    const year = parseInt(s.year.toString().split('-')[0]);
+                    return year >= 2000;
+                });
+            }
+            
+            countEl.textContent = series.length;
+            
+            container.innerHTML = series.map(show => `
+                <a href="watch.html?id=${show.id}&type=series" class="content-card large-card fade-in">
+                    <div class="card-image">
+                        ${show.isNew ? '<span class="type-badge">NEW</span>' : ''}
+                        <img src="${show.poster}" alt="${show.title}" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                        <div class="play-overlay">
+                            <div class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>${show.title}</h3>
+                        <div class="meta">
+                            <span><i class="fas fa-calendar"></i> ${show.year}</span>
+                            <span><i class="fas fa-layer-group"></i> ${show.seasons} Seasons</span>
+                            <span class="rating"><i class="fas fa-star"></i> ${show.rating}</span>
+                        </div>
+                        <p class="card-desc">${show.description}</p>
+                        <div class="card-stats">
+                            <span><i class="fas fa-film"></i> ${show.episodes} Episodes</span>
+                        </div>
+                        <div class="card-genres">
+                            ${show.genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function initFilters() {
+            const sortSelect = document.getElementById('sortSelect');
+            const eraSelect = document.getElementById('eraSelect');
+            
+            sortSelect.addEventListener('change', () => {
+                loadSeries(sortSelect.value, eraSelect.value);
+            });
+            
+            eraSelect.addEventListener('change', () => {
+                loadSeries(sortSelect.value, eraSelect.value);
+            });
+        }
+    </script>
+</body>
+</html>

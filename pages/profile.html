@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SuperSonic</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-super">Super</span><span class="logo-sonic">Sonic</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+                    <li><a href="series.html"><i class="fas fa-tv"></i> Series</a></li>
+                    <li><a href="games.html"><i class="fas fa-gamepad"></i> Games</a></li>
+                    <li><a href="comics.html"><i class="fas fa-book"></i> Comics</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="fanmade.html"><i class="fas fa-heart"></i> Fan Made</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="user-menu">
+                    <button id="themeToggle"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Profile Hero -->
+    <section class="profile-hero">
+        <div class="profile-header">
+            <div class="profile-avatar-wrapper">
+                <img id="profileAvatar" src="" alt="Profile Avatar" class="profile-avatar">
+                <button class="change-avatar-btn" onclick="document.getElementById('avatarInput').click()">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <input type="file" id="avatarInput" accept="image/*" style="display:none">
+            </div>
+            <div class="profile-info">
+                <h1 id="profileName" contenteditable="true">Sonic Fan</h1>
+                <p class="profile-joined">Member since <span id="joinDate">2024</span></p>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-value" id="watchedCount">0</span>
+                        <span class="stat-label">Watched</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="playedCount">0</span>
+                        <span class="stat-label">Played</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="favoritesCount">0</span>
+                        <span class="stat-label">Favorites</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Tabs -->
+    <section class="tabs-section">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="favorites"><i class="fas fa-heart"></i> Favorites</button>
+                <button class="tab-btn" data-tab="history"><i class="fas fa-history"></i> Watch History</button>
+                <button class="tab-btn" data-tab="games"><i class="fas fa-gamepad"></i> Game History</button>
+                <button class="tab-btn" data-tab="settings"><i class="fas fa-cog"></i> Settings</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Favorites Tab -->
+    <section class="content-section tab-content" id="favorites-tab">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-heart"></i> My Favorites</h2>
+            <div class="content-grid" id="favoritesGrid">
+                <div class="empty-state">
+                    <i class="fas fa-heart"></i>
+                    <p>No favorites yet. Start adding content you love!</p>
+                    <a href="../index.html" class="btn btn-primary">Browse Content</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Watch History Tab -->
+    <section class="content-section tab-content hidden" id="history-tab">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-history"></i> Watch History</h2>
+                <button class="btn btn-secondary" id="clearWatchHistory">
+                    <i class="fas fa-trash"></i> Clear History
+                </button>
+            </div>
+            <div class="content-grid" id="watchHistoryGrid">
+                <div class="empty-state">
+                    <i class="fas fa-film"></i>
+                    <p>No watch history yet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game History Tab -->
+    <section class="content-section tab-content hidden" id="games-tab">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-gamepad"></i> Game History</h2>
+                <button class="btn btn-secondary" id="clearGameHistory">
+                    <i class="fas fa-trash"></i> Clear History
+                </button>
+            </div>
+            <div class="content-grid" id="gameHistoryGrid">
+                <div class="empty-state">
+                    <i class="fas fa-gamepad"></i>
+                    <p>No games played yet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Settings Tab -->
+    <section class="content-section tab-content hidden" id="settings-tab">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-cog"></i> Settings</h2>
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3><i class="fas fa-palette"></i> Appearance</h3>
+                    <div class="setting-item">
+                        <label>Theme</label>
+                        <select id="themeSelect">
+                            <option value="dark">Dark Mode</option>
+                            <option value="light">Light Mode</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <h3><i class="fas fa-play-circle"></i> Playback</h3>
+                    <div class="setting-item">
+                        <label>Default Video Quality</label>
+                        <select id="qualitySelect">
+                            <option value="auto">Auto</option>
+                            <option value="1080p">1080p</option>
+                            <option value="720p">720p</option>
+                            <option value="480p">480p</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>Autoplay Next Episode</label>
+                        <label class="toggle">
+                            <input type="checkbox" id="autoplayToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="setting-item">
+                        <label>New Content Alerts</label>
+                        <label class="toggle">
+                            <input type="checkbox" id="notifyToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-card danger-zone">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Data Management</h3>
+                    <div class="setting-item">
+                        <label>Export your data</label>
+                        <button class="btn btn-secondary" id="exportData">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <label>Clear all data</label>
+                        <button class="btn btn-danger" id="clearAllData">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperSonic. Sonic the Hedgehog is a trademark of SEGA.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfile();
+            initTabs();
+            initSettings();
+            initAvatarUpload();
+        });
+
+        function loadProfile() {
+            const profile = window.sonicApp.userProfile.get();
+            
+            // Update avatar
+            document.getElementById('profileAvatar').src = profile.avatar || 'https://via.placeholder.com/150?text=User';
+            
+            // Update name
+            const nameEl = document.getElementById('profileName');
+            nameEl.textContent = profile.username;
+            nameEl.addEventListener('blur', () => {
+                const newName = nameEl.textContent.trim();
+                if (newName) {
+                    profile.username = newName;
+                    window.sonicApp.userProfile.save(profile);
+                }
+            });
+            
+            // Update stats
+            document.getElementById('watchedCount').textContent = profile.watchHistory?.length || 0;
+            document.getElementById('playedCount').textContent = profile.playHistory?.length || 0;
+            document.getElementById('favoritesCount').textContent = profile.favorites?.length || 0;
+            
+            // Load content
+            loadFavorites(profile);
+            loadWatchHistory(profile);
+            loadGameHistory(profile);
+        }
+
+        function loadFavorites(profile) {
+            const container = document.getElementById('favoritesGrid');
+            
+            if (!profile.favorites || profile.favorites.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-heart"></i>
+                        <p>No favorites yet. Start adding content you love!</p>
+                        <a href="../index.html" class="btn btn-primary">Browse Content</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            const items = profile.favorites.map(fav => {
+                let item = null;
+                if (fav.type === 'movie') {
+                    item = sonicData.movies.find(m => m.id === fav.id);
+                } else if (fav.type === 'series') {
+                    item = sonicData.series.find(s => s.id === fav.id);
+                } else if (fav.type === 'game') {
+                    item = sonicData.games.find(g => g.id === fav.id);
+                }
+                return item ? { ...item, type: fav.type } : null;
+            }).filter(Boolean);
+            
+            container.innerHTML = items.map(item => `
+                <div class="content-card with-remove">
+                    <button class="remove-btn" onclick="removeFavorite('${item.id}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <a href="${item.type === 'game' ? 'play.html' : 'watch.html'}?id=${item.id}${item.type === 'series' ? '&type=series' : ''}">
+                        <div class="card-image">
+                            <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/200x280?text=No+Image'">
+                            <div class="play-overlay">
+                                <div class="play-btn"><i class="fas fa-${item.type === 'game' ? 'gamepad' : 'play'}"></i></div>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <h3>${item.title}</h3>
+                            <div class="meta">
+                                <span>${item.year}</span>
+                                <span class="type-badge">${item.type}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function loadWatchHistory(profile) {
+            const container = document.getElementById('watchHistoryGrid');
+            
+            if (!profile.watchHistory || profile.watchHistory.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-film"></i>
+                        <p>No watch history yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const items = profile.watchHistory.map(hist => {
+                let item = sonicData.movies.find(m => m.id === hist.id);
+                if (!item) item = sonicData.series.find(s => s.id === hist.id);
+                return item ? { ...item, ...hist } : null;
+            }).filter(Boolean);
+            
+            container.innerHTML = items.map(item => `
+                <a href="watch.html?id=${item.id}${item.type === 'series' ? '&type=series' : ''}" class="content-card">
+                    <div class="card-image">
+                        <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/200x280?text=No+Image'">
+                        <div class="play-overlay">
+                            <div class="play-btn"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>${item.title}</h3>
+                        <div class="meta">
+                            <span>${item.year}</span>
+                            <span>${new Date(item.lastWatched).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function loadGameHistory(profile) {
+            const container = document.getElementById('gameHistoryGrid');
+            
+            if (!profile.playHistory || profile.playHistory.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-gamepad"></i>
+                        <p>No games played yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const items = profile.playHistory.map(hist => {
+                const item = sonicData.games.find(g => g.id === hist.id);
+                return item ? { ...item, ...hist } : null;
+            }).filter(Boolean);
+            
+            container.innerHTML = items.map(item => `
+                <a href="play.html?id=${item.id}" class="content-card">
+                    <div class="card-image">
+                        <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/200x280?text=No+Image'">
+                        <div class="play-overlay">
+                            <div class="play-btn"><i class="fas fa-gamepad"></i></div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>${item.title}</h3>
+                        <div class="meta">
+                            <span>${item.year}</span>
+                            <span>${new Date(item.lastWatched).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function removeFavorite(itemId) {
+            window.sonicApp.userProfile.removeFavorite(itemId);
+            loadProfile();
+        }
+
+        function initTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const tabId = btn.dataset.tab;
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+                });
+            });
+        }
+
+        function initSettings() {
+            // Theme
+            const themeSelect = document.getElementById('themeSelect');
+            themeSelect.value = localStorage.getItem('sonicTheme') || 'dark';
+            themeSelect.addEventListener('change', () => {
+                localStorage.setItem('sonicTheme', themeSelect.value);
+                document.documentElement.setAttribute('data-theme', themeSelect.value);
+            });
+            
+            // Clear history buttons
+            document.getElementById('clearWatchHistory')?.addEventListener('click', () => {
+                if (confirm('Clear all watch history?')) {
+                    const profile = window.sonicApp.userProfile.get();
+                    profile.watchHistory = [];
+                    window.sonicApp.userProfile.save(profile);
+                    loadProfile();
+                }
+            });
+            
+            document.getElementById('clearGameHistory')?.addEventListener('click', () => {
+                if (confirm('Clear all game history?')) {
+                    const profile = window.sonicApp.userProfile.get();
+                    profile.playHistory = [];
+                    window.sonicApp.userProfile.save(profile);
+                    loadProfile();
+                }
+            });
+            
+            // Export data
+            document.getElementById('exportData')?.addEventListener('click', () => {
+                const data = {
+                    profile: window.sonicApp.userProfile.get(),
+                    theme: localStorage.getItem('sonicTheme'),
+                    exportDate: new Date().toISOString()
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'supersonic-data.json';
+                a.click();
+            });
+            
+            // Clear all data
+            document.getElementById('clearAllData')?.addEventListener('click', () => {
+                if (confirm('This will delete all your data including favorites, history, and settings. Are you sure?')) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            });
+        }
+
+        function initAvatarUpload() {
+            const avatarInput = document.getElementById('avatarInput');
+            
+            avatarInput?.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const dataUrl = e.target.result;
+                    document.getElementById('profileAvatar').src = dataUrl;
+                    
+                    const profile = window.sonicApp.userProfile.get();
+                    profile.avatar = dataUrl;
+                    window.sonicApp.userProfile.save(profile);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+</body>
+</html>

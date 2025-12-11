@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch - SuperSonic</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="../css/player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-super">Super</span><span class="logo-sonic">Sonic</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+                    <li><a href="series.html"><i class="fas fa-tv"></i> Series</a></li>
+                    <li><a href="games.html"><i class="fas fa-gamepad"></i> Games</a></li>
+                    <li><a href="comics.html"><i class="fas fa-book"></i> Comics</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="fanmade.html"><i class="fas fa-heart"></i> Fan Made</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="user-menu">
+                    <button id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <a href="profile.html" class="profile-btn"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Video Player Section -->
+    <section class="player-section">
+        <div class="player-container">
+            <div class="video-player" id="videoPlayer">
+                <div class="player-loading">
+                    <div class="sonic-loader"></div>
+                    <p>Loading video...</p>
+                </div>
+                <iframe id="playerFrame" src="" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>
+            </div>
+            <div class="player-controls">
+                <div class="server-select">
+                    <span>Server:</span>
+                    <button class="server-btn active" data-server="1">Server 1</button>
+                    <button class="server-btn" data-server="2">Server 2</button>
+                    <button class="server-btn" data-server="3">Server 3</button>
+                </div>
+                <div class="player-actions">
+                    <button id="favoriteBtn" class="action-btn"><i class="far fa-heart"></i> Favorite</button>
+                    <button id="shareBtn" class="action-btn"><i class="fas fa-share"></i> Share</button>
+                    <button id="reportBtn" class="action-btn"><i class="fas fa-flag"></i> Report</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Info -->
+    <section class="content-info-section">
+        <div class="container">
+            <div class="content-info-grid">
+                <div class="info-main">
+                    <div class="info-header">
+                        <img id="contentPoster" src="" alt="" class="info-poster">
+                        <div class="info-details">
+                            <h1 id="contentTitle"></h1>
+                            <div class="info-meta" id="contentMeta"></div>
+                            <p id="contentDescription" class="info-description"></p>
+                            <div class="info-cast">
+                                <strong>Cast:</strong> <span id="contentCast"></span>
+                            </div>
+                            <div class="info-genres" id="contentGenres"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-sidebar">
+                    <!-- Episode list for series -->
+                    <div class="episodes-panel" id="episodesPanel" style="display: none;">
+                        <h3><i class="fas fa-list"></i> Episodes</h3>
+                        <div class="season-select">
+                            <select id="seasonSelect"></select>
+                        </div>
+                        <div class="episodes-list" id="episodesList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Content -->
+    <section class="content-section">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-film"></i> You May Also Like</h2>
+            <div class="content-grid" id="relatedGrid"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperSonic. Sonic the Hedgehog is a trademark of SEGA.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        let currentContent = null;
+        let currentEpisode = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContent();
+            initServerButtons();
+            initActions();
+        });
+
+        function loadContent() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const contentId = urlParams.get('id');
+            const contentType = urlParams.get('type') || 'movie';
+            const episodeNum = urlParams.get('ep');
+            const seasonNum = urlParams.get('season');
+            
+            let content = null;
+            
+            if (contentType === 'series') {
+                content = sonicData.series.find(s => s.id === contentId);
+            } else {
+                content = sonicData.movies.find(m => m.id === contentId);
+            }
+            
+            if (!content) {
+                document.querySelector('.player-loading').innerHTML = '<p>Content not found</p>';
+                return;
+            }
+            
+            currentContent = content;
+            document.title = `${content.title} - SuperSonic`;
+            
+            // Update info
+            document.getElementById('contentTitle').textContent = content.title;
+            document.getElementById('contentPoster').src = content.poster;
+            document.getElementById('contentDescription').textContent = content.description;
+            
+            const meta = [];
+            meta.push(`<span><i class="fas fa-calendar"></i> ${content.year}</span>`);
+            if (content.duration) meta.push(`<span><i class="fas fa-clock"></i> ${content.duration}</span>`);
+            if (content.rating) meta.push(`<span class="rating"><i class="fas fa-star"></i> ${content.rating}</span>`);
+            if (content.seasons) meta.push(`<span><i class="fas fa-layer-group"></i> ${content.seasons} Seasons</span>`);
+            document.getElementById('contentMeta').innerHTML = meta.join('');
+            
+            if (content.cast) {
+                document.getElementById('contentCast').textContent = content.cast.join(', ');
+            }
+            
+            if (content.genres) {
+                document.getElementById('contentGenres').innerHTML = content.genres.map(g => 
+                    `<span class="genre-tag">${g}</span>`
+                ).join('');
+            }
+            
+            // Load video
+            if (contentType === 'series' && content.episodeList && content.episodeList.length > 0) {
+                loadSeriesPlayer(content, seasonNum, episodeNum);
+            } else {
+                loadMoviePlayer(content);
+            }
+            
+            // Load related content
+            loadRelated(contentType);
+            
+            // Add to history
+            window.sonicApp.userProfile.addToHistory(contentId, contentType);
+        }
+
+        function loadMoviePlayer(movie) {
+            const playerFrame = document.getElementById('playerFrame');
+            const loading = document.querySelector('.player-loading');
+            
+            if (movie.embedUrl) {
+                playerFrame.src = movie.embedUrl;
+                playerFrame.onload = () => {
+                    loading.style.display = 'none';
+                };
+            } else {
+                loading.innerHTML = '<p>No video source available</p>';
+            }
+        }
+
+        function loadSeriesPlayer(series, seasonNum, episodeNum) {
+            const episodesPanel = document.getElementById('episodesPanel');
+            const seasonSelect = document.getElementById('seasonSelect');
+            const episodesList = document.getElementById('episodesList');
+            
+            episodesPanel.style.display = 'block';
+            
+            // Get unique seasons
+            const seasons = [...new Set(series.episodeList.map(e => e.season))];
+            
+            // Populate season select
+            seasonSelect.innerHTML = seasons.map(s => 
+                `<option value="${s}">Season ${s}</option>`
+            ).join('');
+            
+            seasonSelect.value = seasonNum || seasons[0];
+            
+            // Load episodes
+            function loadSeasonEpisodes(season) {
+                const eps = series.episodeList.filter(e => e.season == season);
+                episodesList.innerHTML = eps.map(ep => `
+                    <div class="episode-item ${currentEpisode === ep ? 'active' : ''}" 
+                         onclick="playEpisode(${ep.season}, ${ep.episode})">
+                        <span class="ep-number">E${ep.episode}</span>
+                        <span class="ep-title">${ep.title}</span>
+                    </div>
+                `).join('');
+            }
+            
+            seasonSelect.addEventListener('change', () => {
+                loadSeasonEpisodes(seasonSelect.value);
+            });
+            
+            loadSeasonEpisodes(seasonSelect.value);
+            
+            // Play first or specified episode
+            const targetSeason = seasonNum || seasons[0];
+            const targetEpisode = episodeNum || 1;
+            playEpisode(targetSeason, targetEpisode);
+        }
+
+        function playEpisode(season, episode) {
+            if (!currentContent || !currentContent.episodeList) return;
+            
+            const ep = currentContent.episodeList.find(e => e.season == season && e.episode == episode);
+            if (!ep) return;
+            
+            currentEpisode = ep;
+            
+            const playerFrame = document.getElementById('playerFrame');
+            const loading = document.querySelector('.player-loading');
+            
+            // Update URL
+            const newUrl = `watch.html?id=${currentContent.id}&type=series&season=${season}&ep=${episode}`;
+            window.history.replaceState({}, '', newUrl);
+            
+            // Update active episode
+            document.querySelectorAll('.episode-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event?.target?.closest('.episode-item')?.classList.add('active');
+            
+            if (ep.embedUrl) {
+                loading.style.display = 'flex';
+                playerFrame.src = ep.embedUrl;
+                playerFrame.onload = () => {
+                    loading.style.display = 'none';
+                };
+            } else {
+                loading.innerHTML = '<p>Episode not available</p>';
+                loading.style.display = 'flex';
+            }
+        }
+
+        function initServerButtons() {
+            const serverBtns = document.querySelectorAll('.server-btn');
+            
+            serverBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    serverBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // In a real implementation, this would switch to different embed sources
+                    console.log('Switched to server', btn.dataset.server);
+                });
+            });
+        }
+
+        function initActions() {
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            const shareBtn = document.getElementById('shareBtn');
+            
+            favoriteBtn.addEventListener('click', () => {
+                if (!currentContent) return;
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const type = urlParams.get('type') || 'movie';
+                
+                window.sonicApp.userProfile.addFavorite(currentContent.id, type);
+                favoriteBtn.innerHTML = '<i class="fas fa-heart"></i> Favorited';
+                favoriteBtn.classList.add('active');
+            });
+            
+            shareBtn.addEventListener('click', () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: currentContent?.title,
+                        url: window.location.href
+                    });
+                } else {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert('Link copied to clipboard!');
+                }
+            });
+        }
+
+        function loadRelated(type) {
+            const container = document.getElementById('relatedGrid');
+            let items = type === 'series' ? sonicData.series : sonicData.movies;
+            
+            // Filter out current content and limit to 4
+            items = items.filter(i => i.id !== currentContent?.id).slice(0, 4);
+            
+            container.innerHTML = items.map(item => `
+                <a href="watch.html?id=${item.id}${type === 'series' ? '&type=series' : ''}" class="content-card">
+                    <div class="card-image">
+                        <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/200x280?text=No+Image'">
+                        <div class="play-overlay">
+                            <div class="play-btn"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+                    <div class="card-info">
+                        <h3>${item.title}</h3>
+                        <div class="meta">
+                            <span>${item.year}</span>
+                            <span class="rating"><i class="fas fa-star"></i> ${item.rating}</span>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

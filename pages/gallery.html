@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - SuperSonic</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-super">Super</span><span class="logo-sonic">Sonic</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+                    <li><a href="series.html"><i class="fas fa-tv"></i> Series</a></li>
+                    <li><a href="games.html"><i class="fas fa-gamepad"></i> Games</a></li>
+                    <li><a href="comics.html"><i class="fas fa-book"></i> Comics</a></li>
+                    <li><a href="gallery.html" class="active"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="fanmade.html"><i class="fas fa-heart"></i> Fan Made</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search gallery...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-menu">
+                    <button id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <a href="profile.html" class="profile-btn"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-bg" style="background-image: url('https://wallpapercave.com/wp/wp7467279.jpg');"></div>
+        <div class="page-hero-content">
+            <h1><i class="fas fa-images"></i> Gallery</h1>
+            <p>Download wallpapers and profile pictures</p>
+        </div>
+    </section>
+
+    <!-- Gallery Tabs -->
+    <section class="tabs-section">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="wallpapers"><i class="fas fa-desktop"></i> Wallpapers</button>
+                <button class="tab-btn" data-tab="profiles"><i class="fas fa-user-circle"></i> Profile Pictures</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wallpapers Section -->
+    <section class="content-section tab-content" id="wallpapers-tab">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Wallpapers</h2>
+                <div class="filter-group inline">
+                    <select id="wallpaperFilter">
+                        <option value="all">All Categories</option>
+                        <option value="sonic">Sonic</option>
+                        <option value="shadow">Shadow</option>
+                        <option value="team">Team</option>
+                        <option value="zones">Zones</option>
+                        <option value="games">Games</option>
+                    </select>
+                </div>
+            </div>
+            <div class="gallery-grid" id="wallpapersGrid">
+                <!-- Wallpapers loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Pictures Section -->
+    <section class="content-section tab-content hidden" id="profiles-tab">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Profile Pictures</h2>
+                <div class="filter-group inline">
+                    <select id="profileFilter">
+                        <option value="all">All Characters</option>
+                        <option value="sonic">Sonic</option>
+                        <option value="tails">Tails</option>
+                        <option value="knuckles">Knuckles</option>
+                        <option value="shadow">Shadow</option>
+                        <option value="amy">Amy</option>
+                        <option value="eggman">Eggman</option>
+                    </select>
+                </div>
+            </div>
+            <div class="profiles-grid" id="profilesGrid">
+                <!-- Profile pictures loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content image-modal-content">
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+            <img id="modalImage" src="" alt="">
+            <div class="image-info">
+                <h3 id="modalTitle"></h3>
+                <p id="modalResolution"></p>
+                <div class="image-actions">
+                    <a id="downloadBtn" href="" download class="btn btn-primary"><i class="fas fa-download"></i> Download</a>
+                    <button id="setProfileBtn" class="btn btn-secondary"><i class="fas fa-user-circle"></i> Set as Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperSonic. Sonic the Hedgehog is a trademark of SEGA.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initTabs();
+            loadWallpapers();
+            loadProfiles();
+            initFilters();
+            initModal();
+        });
+
+        function initTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const tabId = btn.dataset.tab;
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+                });
+            });
+        }
+
+        function loadWallpapers(filter = 'all') {
+            const container = document.getElementById('wallpapersGrid');
+            let wallpapers = sonicData.gallery.wallpapers;
+            
+            if (filter !== 'all') {
+                wallpapers = wallpapers.filter(w => w.category === filter);
+            }
+            
+            container.innerHTML = wallpapers.map(wallpaper => `
+                <div class="gallery-item" onclick="openImageModal('${wallpaper.fullUrl}', '${wallpaper.title}', '${wallpaper.resolution}')">
+                    <img src="${wallpaper.thumbnail}" alt="${wallpaper.title}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h4>${wallpaper.title}</h4>
+                        <span>${wallpaper.resolution}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadProfiles(filter = 'all') {
+            const container = document.getElementById('profilesGrid');
+            let profiles = sonicData.gallery.profilePics;
+            
+            if (filter !== 'all') {
+                profiles = profiles.filter(p => p.character === filter);
+            }
+            
+            container.innerHTML = profiles.map(profile => `
+                <div class="profile-item" onclick="openImageModal('${profile.url}', '${profile.title}', '${profile.size}', true)">
+                    <img src="${profile.url}" alt="${profile.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/150?text=${profile.title}'">
+                    <div class="profile-overlay">
+                        <h4>${profile.title}</h4>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function initFilters() {
+            const wallpaperFilter = document.getElementById('wallpaperFilter');
+            const profileFilter = document.getElementById('profileFilter');
+            
+            wallpaperFilter.addEventListener('change', () => {
+                loadWallpapers(wallpaperFilter.value);
+            });
+            
+            profileFilter.addEventListener('change', () => {
+                loadProfiles(profileFilter.value);
+            });
+        }
+
+        function initModal() {
+            const modal = document.getElementById('imageModal');
+            const closeBtn = modal.querySelector('.modal-close');
+            
+            closeBtn.addEventListener('click', closeImageModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeImageModal();
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeImageModal();
+            });
+        }
+
+        function openImageModal(url, title, resolution, isProfile = false) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalResolution = document.getElementById('modalResolution');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const setProfileBtn = document.getElementById('setProfileBtn');
+            
+            modalImage.src = url;
+            modalTitle.textContent = title;
+            modalResolution.textContent = resolution;
+            downloadBtn.href = url;
+            
+            if (isProfile) {
+                setProfileBtn.style.display = 'inline-flex';
+                setProfileBtn.onclick = () => setAsProfile(url, title);
+            } else {
+                setProfileBtn.style.display = 'none';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+
+        function setAsProfile(url, title) {
+            const profile = window.sonicApp.userProfile.get();
+            profile.avatar = url;
+            window.sonicApp.userProfile.save(profile);
+            
+            alert(`Profile picture set to ${title}!`);
+            closeImageModal();
+        }
+    </script>
+</body>
+</html>

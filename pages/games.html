@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - SuperSonic</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-super">Super</span><span class="logo-sonic">Sonic</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+                    <li><a href="series.html"><i class="fas fa-tv"></i> Series</a></li>
+                    <li><a href="games.html" class="active"><i class="fas fa-gamepad"></i> Games</a></li>
+                    <li><a href="comics.html"><i class="fas fa-book"></i> Comics</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="fanmade.html"><i class="fas fa-heart"></i> Fan Made</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search games...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-menu">
+                    <button id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <a href="profile.html" class="profile-btn"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero games-hero">
+        <div class="page-hero-bg" style="background-image: url('https://wallpapercave.com/wp/wp7476391.jpg');"></div>
+        <div class="page-hero-content">
+            <h1><i class="fas fa-gamepad"></i> Sonic Games</h1>
+            <p>Play classic and modern Sonic games in your browser</p>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label>Sort By:</label>
+                    <select id="sortSelect">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="title">A-Z</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Category:</label>
+                    <select id="categorySelect">
+                        <option value="all">All Games</option>
+                        <option value="classic">Classic (Genesis)</option>
+                        <option value="adventure">Adventure Era</option>
+                        <option value="modern">Modern</option>
+                    </select>
+                </div>
+                <div class="results-count">
+                    <span id="resultsCount">0</span> games found
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Grid -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-grid large-grid" id="gamesGrid">
+                <!-- Games loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Emulator Info -->
+    <section class="info-section">
+        <div class="container">
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> How to Play</h3>
+                <p>Our games use browser-based emulators. Classic Genesis/Mega Drive games run in JavaScript emulators. Use your keyboard or connect a gamepad for the best experience.</p>
+                <div class="controls-guide">
+                    <div class="control-item">
+                        <span class="key">Arrow Keys</span>
+                        <span>Move</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">Z / A</span>
+                        <span>Jump</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">X / S</span>
+                        <span>Spin Dash</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">Enter</span>
+                        <span>Start</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperSonic. Sonic the Hedgehog is a trademark of SEGA.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGames();
+            initFilters();
+        });
+
+        function loadGames(sortBy = 'newest', filterCategory = 'all') {
+            const container = document.getElementById('gamesGrid');
+            const countEl = document.getElementById('resultsCount');
+            
+            let games = [...sonicData.games];
+            
+            // Sort
+            switch(sortBy) {
+                case 'oldest':
+                    games.sort((a, b) => a.year - b.year);
+                    break;
+                case 'rating':
+                    games.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'title':
+                    games.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                default:
+                    games.sort((a, b) => b.year - a.year);
+            }
+            
+            // Filter by category
+            if (filterCategory !== 'all') {
+                games = games.filter(g => g.category === filterCategory);
+            }
+            
+            countEl.textContent = games.length;
+            
+            container.innerHTML = games.map(game => {
+                const isPlayable = game.emulator !== 'none';
+                return `
+                    <a href="${isPlayable ? `play.html?id=${game.id}` : '#'}" class="content-card large-card fade-in ${!isPlayable ? 'not-playable' : ''}">
+                        <div class="card-image">
+                            ${game.isNew ? '<span class="type-badge">NEW</span>' : ''}
+                            ${!isPlayable ? '<span class="type-badge unavailable">INFO ONLY</span>' : ''}
+                            <img src="${game.poster}" alt="${game.title}" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                            <div class="play-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-${isPlayable ? 'gamepad' : 'info'}"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <h3>${game.title}</h3>
+                            <div class="meta">
+                                <span><i class="fas fa-calendar"></i> ${game.year}</span>
+                                <span><i class="fas fa-desktop"></i> ${game.platform}</span>
+                                <span class="rating"><i class="fas fa-star"></i> ${game.rating}</span>
+                            </div>
+                            <p class="card-desc">${game.description}</p>
+                            <div class="card-genres">
+                                <span class="genre-tag ${game.category}">${game.category}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        function initFilters() {
+            const sortSelect = document.getElementById('sortSelect');
+            const categorySelect = document.getElementById('categorySelect');
+            
+            sortSelect.addEventListener('change', () => {
+                loadGames(sortSelect.value, categorySelect.value);
+            });
+            
+            categorySelect.addEventListener('change', () => {
+                loadGames(sortSelect.value, categorySelect.value);
+            });
+        }
+    </script>
+</body>
+</html>

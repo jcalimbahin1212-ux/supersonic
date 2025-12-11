@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan Made - SuperSonic</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-super">Super</span><span class="logo-sonic">Sonic</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="movies.html"><i class="fas fa-film"></i> Movies</a></li>
+                    <li><a href="series.html"><i class="fas fa-tv"></i> Series</a></li>
+                    <li><a href="games.html"><i class="fas fa-gamepad"></i> Games</a></li>
+                    <li><a href="comics.html"><i class="fas fa-book"></i> Comics</a></li>
+                    <li><a href="gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
+                    <li><a href="fanmade.html" class="active"><i class="fas fa-heart"></i> Fan Made</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search fan content...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-menu">
+                    <button id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <a href="profile.html" class="profile-btn"><i class="fas fa-user"></i></a>
+                </div>
+            </div>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero fanmade-hero">
+        <div class="page-hero-bg" style="background: linear-gradient(135deg, #ff6b6b, #a55eea);"></div>
+        <div class="page-hero-content">
+            <h1><i class="fas fa-heart"></i> Fan Made Content</h1>
+            <p>Explore amazing fan games, animations, comics, and music created by the Sonic community</p>
+        </div>
+    </section>
+
+    <!-- Fan Games Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-gamepad"></i> Fan Games</h2>
+            </div>
+            <div class="content-grid" id="fanGamesGrid">
+                <!-- Fan games loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Fan Animations Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-video"></i> Fan Animations</h2>
+            </div>
+            <div class="content-grid" id="fanAnimationsGrid">
+                <!-- Fan animations loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Submit Content Section -->
+    <section class="submit-section">
+        <div class="container">
+            <div class="submit-box">
+                <h2><i class="fas fa-upload"></i> Submit Your Creation</h2>
+                <p>Have you created something amazing? Share it with the community!</p>
+                <form id="submitForm" class="submit-form">
+                    <div class="form-group">
+                        <label for="creatorName">Your Name</label>
+                        <input type="text" id="creatorName" placeholder="Enter your name or alias">
+                    </div>
+                    <div class="form-group">
+                        <label for="contentType">Content Type</label>
+                        <select id="contentType">
+                            <option value="game">Fan Game</option>
+                            <option value="animation">Animation</option>
+                            <option value="comic">Comic</option>
+                            <option value="music">Music</option>
+                            <option value="art">Art</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contentTitle">Title</label>
+                        <input type="text" id="contentTitle" placeholder="Title of your creation">
+                    </div>
+                    <div class="form-group">
+                        <label for="contentUrl">Link</label>
+                        <input type="url" id="contentUrl" placeholder="Link to your content (YouTube, itch.io, etc.)">
+                    </div>
+                    <div class="form-group">
+                        <label for="contentDescription">Description</label>
+                        <textarea id="contentDescription" rows="4" placeholder="Tell us about your creation"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="info-section">
+        <div class="container">
+            <div class="info-box">
+                <h3><i class="fas fa-tools"></i> Fan Game Resources</h3>
+                <p>Want to create your own Sonic fan game? Here are some popular engines and tools:</p>
+                <div class="resources-grid">
+                    <a href="https://sonicworldfangame.com/" target="_blank" class="resource-item">
+                        <i class="fas fa-cube"></i>
+                        <h4>Sonic World</h4>
+                        <p>A fan-made 3D Sonic game framework</p>
+                    </a>
+                    <a href="https://sonicgamemakerstudio.weebly.com/" target="_blank" class="resource-item">
+                        <i class="fas fa-code"></i>
+                        <h4>Sonic Game Maker Studio</h4>
+                        <p>Create 2D Sonic games easily</p>
+                    </a>
+                    <a href="https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation" target="_blank" class="resource-item">
+                        <i class="fab fa-github"></i>
+                        <h4>Retro Engine Decomp</h4>
+                        <p>Decompiled Sonic 1 & 2 engines</p>
+                    </a>
+                    <a href="https://www.srb2.org/" target="_blank" class="resource-item">
+                        <i class="fas fa-rocket"></i>
+                        <h4>SRB2 Modding</h4>
+                        <p>Create mods for Sonic Robo Blast 2</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 SuperSonic. Sonic the Hedgehog is a trademark of SEGA.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFanGames();
+            loadFanAnimations();
+            initSubmitForm();
+        });
+
+        function loadFanGames() {
+            const container = document.getElementById('fanGamesGrid');
+            const games = sonicData.fanmade.games;
+            
+            container.innerHTML = games.map(game => `
+                <div class="fan-card">
+                    <div class="fan-image">
+                        <img src="${game.thumbnail}" alt="${game.title}" onerror="this.src='https://via.placeholder.com/300x200?text=Fan+Game'">
+                        <div class="play-overlay">
+                            <a href="${game.playUrl}" target="_blank" class="play-btn">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="fan-info">
+                        <h3>${game.title}</h3>
+                        <p class="creator">by ${game.creator}</p>
+                        <p class="description">${game.description}</p>
+                        <a href="${game.playUrl}" target="_blank" class="btn btn-sm">
+                            <i class="fas fa-gamepad"></i> Play
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadFanAnimations() {
+            const container = document.getElementById('fanAnimationsGrid');
+            const animations = sonicData.fanmade.animations;
+            
+            container.innerHTML = animations.map(anim => `
+                <div class="fan-card">
+                    <div class="fan-image video-thumb">
+                        <img src="${anim.thumbnail}" alt="${anim.title}" onerror="this.src='https://via.placeholder.com/300x200?text=Animation'">
+                        <div class="play-overlay">
+                            <div class="play-btn" onclick="playVideo('${anim.watchUrl}', '${anim.title}')">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fan-info">
+                        <h3>${anim.title}</h3>
+                        <p class="creator">by ${anim.creator}</p>
+                        <p class="description">${anim.description}</p>
+                        <button onclick="playVideo('${anim.watchUrl}', '${anim.title}')" class="btn btn-sm">
+                            <i class="fas fa-play"></i> Watch
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function playVideo(url, title) {
+            // Create video modal
+            const modal = document.createElement('div');
+            modal.className = 'video-modal active';
+            modal.innerHTML = `
+                <div class="video-modal-content">
+                    <button class="modal-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>${title}</h3>
+                    <div class="video-container">
+                        <iframe src="${url}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+        }
+
+        function initSubmitForm() {
+            const form = document.getElementById('submitForm');
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = {
+                    creator: document.getElementById('creatorName').value,
+                    type: document.getElementById('contentType').value,
+                    title: document.getElementById('contentTitle').value,
+                    url: document.getElementById('contentUrl').value,
+                    description: document.getElementById('contentDescription').value,
+                    submittedAt: new Date().toISOString()
+                };
+                
+                // Save to localStorage (in a real app, this would go to a server)
+                const submissions = JSON.parse(localStorage.getItem('sonicSubmissions') || '[]');
+                submissions.push(formData);
+                localStorage.setItem('sonicSubmissions', JSON.stringify(submissions));
+                
+                alert('Thank you for your submission! Our team will review it shortly.');
+                form.reset();
+            });
+        }
+    </script>
+</body>
+</html>

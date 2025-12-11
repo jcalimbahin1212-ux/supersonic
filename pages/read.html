@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Comics - SuperSonic</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="../css/reader.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header reader-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-super">Super</span><span class="logo-sonic">Sonic</span>
+                </a>
+            </div>
+            <div class="reader-nav">
+                <button id="prevPage" class="nav-btn"><i class="fas fa-chevron-left"></i> Previous</button>
+                <span class="page-indicator">
+                    Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                </span>
+                <button id="nextPage" class="nav-btn">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="header-actions">
+                <button id="zoomOut" class="action-btn"><i class="fas fa-search-minus"></i></button>
+                <button id="zoomIn" class="action-btn"><i class="fas fa-search-plus"></i></button>
+                <button id="fullscreenBtn" class="action-btn"><i class="fas fa-expand"></i></button>
+                <a href="comics.html" class="btn btn-secondary"><i class="fas fa-times"></i> Close</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Reader Container -->
+    <main class="reader-container">
+        <div class="reader-sidebar" id="readerSidebar">
+            <div class="comic-info-mini">
+                <img id="comicCover" src="" alt="">
+                <div>
+                    <h3 id="comicTitle"></h3>
+                    <p id="comicPublisher"></p>
+                </div>
+            </div>
+            <div class="page-thumbnails" id="pageThumbnails">
+                <!-- Page thumbnails will be loaded here -->
+            </div>
+        </div>
+        
+        <div class="reader-main">
+            <div class="reader-viewport" id="readerViewport">
+                <div class="reader-page" id="readerPage">
+                    <div class="page-loading">
+                        <div class="sonic-loader"></div>
+                        <p>Loading comic...</p>
+                    </div>
+                    <img id="pageImage" src="" alt="Comic page">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reader Controls (Mobile) -->
+    <div class="reader-mobile-controls">
+        <button id="prevPageMobile"><i class="fas fa-chevron-left"></i></button>
+        <span id="pageIndicatorMobile">1 / 1</span>
+        <button id="nextPageMobile"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Comic Not Available Modal -->
+    <div class="modal" id="unavailableModal">
+        <div class="modal-content">
+            <h2><i class="fas fa-book"></i> Comic Reader</h2>
+            <img id="modalCover" src="" alt="" class="modal-comic-cover">
+            <h3 id="modalTitle"></h3>
+            <p id="modalInfo"></p>
+            <div class="modal-notice">
+                <p>This comic reader is a placeholder. In a full implementation, you would need to:</p>
+                <ul>
+                    <li>Upload your own comic files (CBZ, CBR, PDF)</li>
+                    <li>Or integrate with a comic API service</li>
+                    <li>Or host comic images on your own server</li>
+                </ul>
+            </div>
+            <div class="modal-actions">
+                <a href="comics.html" class="btn btn-primary">Back to Comics</a>
+                <label class="btn btn-secondary">
+                    <i class="fas fa-upload"></i> Upload CBZ/CBR
+                    <input type="file" id="comicUpload" accept=".cbz,.cbr,.zip" style="display:none">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        let currentComic = null;
+        let pages = [];
+        let currentPageIndex = 0;
+        let zoomLevel = 1;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComic();
+            initControls();
+        });
+
+        function loadComic() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const comicId = urlParams.get('id');
+            
+            const comic = sonicData.comics.find(c => c.id === comicId);
+            
+            if (!comic) {
+                showUnavailable(null);
+                return;
+            }
+            
+            currentComic = comic;
+            document.title = `${comic.title} - SuperSonic Reader`;
+            
+            // Update modal info
+            document.getElementById('modalCover').src = comic.cover;
+            document.getElementById('modalTitle').textContent = comic.title;
+            document.getElementById('modalInfo').textContent = `${comic.year} • ${comic.publisher} • ${comic.pages} pages`;
+            
+            // Update sidebar
+            document.getElementById('comicCover').src = comic.cover;
+            document.getElementById('comicTitle').textContent = comic.title;
+            document.getElementById('comicPublisher').textContent = comic.publisher;
+            
+            // Show unavailable modal since we don't have actual comic pages
+            showUnavailable(comic);
+        }
+
+        function showUnavailable(comic) {
+            document.getElementById('unavailableModal').classList.add('active');
+        }
+
+        function initControls() {
+            // Navigation
+            document.getElementById('prevPage')?.addEventListener('click', prevPage);
+            document.getElementById('nextPage')?.addEventListener('click', nextPage);
+            document.getElementById('prevPageMobile')?.addEventListener('click', prevPage);
+            document.getElementById('nextPageMobile')?.addEventListener('click', nextPage);
+            
+            // Zoom
+            document.getElementById('zoomIn')?.addEventListener('click', () => {
+                zoomLevel = Math.min(zoomLevel + 0.25, 3);
+                updateZoom();
+            });
+            
+            document.getElementById('zoomOut')?.addEventListener('click', () => {
+                zoomLevel = Math.max(zoomLevel - 0.25, 0.5);
+                updateZoom();
+            });
+            
+            // Fullscreen
+            document.getElementById('fullscreenBtn')?.addEventListener('click', toggleFullscreen);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        prevPage();
+                        break;
+                    case 'ArrowRight':
+                        nextPage();
+                        break;
+                    case '+':
+                    case '=':
+                        zoomLevel = Math.min(zoomLevel + 0.25, 3);
+                        updateZoom();
+                        break;
+                    case '-':
+                        zoomLevel = Math.max(zoomLevel - 0.25, 0.5);
+                        updateZoom();
+                        break;
+                    case 'f':
+                    case 'F':
+                        toggleFullscreen();
+                        break;
+                }
+            });
+            
+            // Comic file upload
+            document.getElementById('comicUpload')?.addEventListener('change', handleComicUpload);
+        }
+
+        async function handleComicUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            document.getElementById('unavailableModal').classList.remove('active');
+            
+            const loading = document.querySelector('.page-loading');
+            loading.style.display = 'flex';
+            loading.innerHTML = '<div class="sonic-loader"></div><p>Loading comic...</p>';
+            
+            try {
+                const zip = await JSZip.loadAsync(file);
+                pages = [];
+                
+                // Get all image files from the archive
+                const imageFiles = Object.keys(zip.files)
+                    .filter(name => /\.(jpg|jpeg|png|gif|webp)$/i.test(name))
+                    .sort();
+                
+                for (const filename of imageFiles) {
+                    const blob = await zip.files[filename].async('blob');
+                    const url = URL.createObjectURL(blob);
+                    pages.push(url);
+                }
+                
+                if (pages.length > 0) {
+                    loading.style.display = 'none';
+                    document.getElementById('totalPages').textContent = pages.length;
+                    document.getElementById('pageIndicatorMobile').textContent = `1 / ${pages.length}`;
+                    loadThumbnails();
+                    goToPage(0);
+                } else {
+                    loading.innerHTML = '<p>No images found in archive</p>';
+                }
+            } catch (error) {
+                loading.innerHTML = `<p>Error loading comic: ${error.message}</p>`;
+            }
+        }
+
+        function loadThumbnails() {
+            const container = document.getElementById('pageThumbnails');
+            container.innerHTML = pages.map((url, index) => `
+                <div class="thumb-item ${index === 0 ? 'active' : ''}" onclick="goToPage(${index})">
+                    <img src="${url}" alt="Page ${index + 1}">
+                    <span>${index + 1}</span>
+                </div>
+            `).join('');
+        }
+
+        function goToPage(index) {
+            if (index < 0 || index >= pages.length) return;
+            
+            currentPageIndex = index;
+            document.getElementById('pageImage').src = pages[index];
+            document.getElementById('currentPage').textContent = index + 1;
+            document.getElementById('pageIndicatorMobile').textContent = `${index + 1} / ${pages.length}`;
+            
+            // Update thumbnail active state
+            document.querySelectorAll('.thumb-item').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+            
+            // Scroll thumbnail into view
+            document.querySelector('.thumb-item.active')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function nextPage() {
+            goToPage(currentPageIndex + 1);
+        }
+
+        function prevPage() {
+            goToPage(currentPageIndex - 1);
+        }
+
+        function updateZoom() {
+            const page = document.getElementById('readerPage');
+            page.style.transform = `scale(${zoomLevel})`;
+        }
+
+        function toggleFullscreen() {
+            const reader = document.querySelector('.reader-main');
+            if (!document.fullscreenElement) {
+                reader.requestFullscreen?.();
+            } else {
+                document.exitFullscreen?.();
+            }
+        }
+    </script>
+</body>
+</html>
