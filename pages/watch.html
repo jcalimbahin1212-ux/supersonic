@@ -52,9 +52,9 @@
             <div class="player-controls">
                 <div class="server-select">
                     <span>Server:</span>
-                    <button class="server-btn active" data-server="1"><i class="fas fa-cloud"></i> Cloud</button>
-                    <button class="server-btn" data-server="2">VidSrc</button>
-                    <button class="server-btn" data-server="3">Backup</button>
+                    <button class="server-btn active" data-server="1"><i class="fas fa-play-circle"></i> Primary</button>
+                    <button class="server-btn" data-server="2"><i class="fas fa-cloud"></i> Cloud</button>
+                    <button class="server-btn" data-server="3"><i class="fas fa-sync-alt"></i> Backup</button>
                 </div>
                 <div class="player-actions">
                     <button id="favoriteBtn" class="action-btn"><i class="far fa-heart"></i> Favorite</button>
@@ -110,6 +110,7 @@
         <div class="container">
             <div class="footer-bottom">
                 <p>&copy; 2024 SuperSonic. Sonic the Hedgehog is a trademark of SEGA.</p>
+                <p class="credits">Created by <strong>James C.</strong> 💙</p>
             </div>
         </div>
     </footer>
@@ -299,13 +300,13 @@
                     // Switch embed source based on server
                     let embedUrl = null;
                     if (serverNum === '1') {
-                        // Server 1: 2embed (Cloud - cleanest)
+                        // Server 1: autoembed (Primary - cleanest, no ads)
                         embedUrl = content.embedUrl;
                     } else if (serverNum === '2') {
-                        // Server 2: vidsrc.xyz (backup)
+                        // Server 2: 2embed (backup)
                         embedUrl = content.embedUrl2 || content.embedUrl;
                     } else if (serverNum === '3') {
-                        // Server 3: vidsrc.icu (fallback)
+                        // Server 3: vidsrc.xyz (fallback)
                         embedUrl = content.embedUrl3 || content.embedUrl;
                     }
                     

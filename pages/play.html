@@ -144,12 +144,13 @@
         <div class="container">
             <div class="footer-bottom">
                 <p>&copy; 2024 SuperSonic. Sonic the Hedgehog is a trademark of SEGA.</p>
+                <p class="credits">Created by <strong>James C.</strong> 💙</p>
             </div>
         </div>
     </footer>
 
     <!-- EmulatorJS -->
-    <script src="https://www.emulatorjs.com/loader.js"></script>
+    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
     <script src="/js/data.js"></script>
     <script src="/js/app.js"></script>
     <script>
@@ -234,18 +235,25 @@
                 
                 container.innerHTML = `<div id="game" style="width:100%;height:100%;"></div>`;
                 
+                // Use CORS proxy for archive.org URLs
+                let romUrl = game.romUrl;
+                if (romUrl.includes('archive.org')) {
+                    // Use a CORS proxy for archive.org
+                    romUrl = 'https://corsproxy.io/?' + encodeURIComponent(game.romUrl);
+                }
+                
                 // Initialize EmulatorJS with remote ROM
                 window.EJS_player = '#game';
                 window.EJS_core = core;
-                window.EJS_gameUrl = game.romUrl;
-                window.EJS_pathtodata = 'https://www.emulatorjs.com/data/';
+                window.EJS_gameUrl = romUrl;
+                window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
                 window.EJS_startOnLoaded = true;
                 window.EJS_color = '#1e90ff';
                 window.EJS_backgroundColor = '#0a0a0a';
                 
                 // Load EmulatorJS
                 const script = document.createElement('script');
-                script.src = 'https://www.emulatorjs.com/data/loader.js';
+                script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
                 script.onload = () => {
                     loading.style.display = 'none';
                 };
@@ -295,12 +303,12 @@
                 window.EJS_player = '#game';
                 window.EJS_core = core;
                 window.EJS_gameUrl = URL.createObjectURL(file);
-                window.EJS_pathtodata = 'https://www.emulatorjs.com/data/';
+                window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
                 window.EJS_startOnLoaded = true;
                 
                 // Load EmulatorJS
                 const script = document.createElement('script');
-                script.src = 'https://www.emulatorjs.com/data/loader.js';
+                script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
                 document.body.appendChild(script);
             };
             

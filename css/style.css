@@ -811,6 +811,16 @@ ul {
     margin-top: 10px;
 }
 
+.credits {
+    font-size: 0.9rem;
+    margin-top: 10px;
+    color: var(--sonic-blue);
+}
+
+.credits strong {
+    color: #fff;
+}
+
 /* Modal */
 .modal {
     position: fixed;
