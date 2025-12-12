@@ -149,8 +149,7 @@
         </div>
     </footer>
 
-    <!-- EmulatorJS -->
-    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+    <!-- EmulatorJS loaded dynamically -->
     <script src="../js/data.js"></script>
     <script src="../js/app.js"></script>
     <script>
@@ -231,18 +230,18 @@
             // Check if game has a ROM URL (pre-loaded)
             if (game.romUrl && game.romUrl.startsWith('http')) {
                 // Auto-load ROM from URL
-                loading.innerHTML = '<div class="sonic-loader"></div><p>Loading game...</p>';
+                loading.innerHTML = '<div class="sonic-loader"></div><p>Loading game... This may take a moment.</p>';
                 
-                container.innerHTML = `<div id="game" style="width:100%;height:100%;"></div>`;
+                container.innerHTML = `<div id="game" style="width:100%;height:100%;min-height:480px;"></div>`;
                 
                 // Use CORS proxy for archive.org URLs
                 let romUrl = game.romUrl;
                 if (romUrl.includes('archive.org')) {
-                    // Use a CORS proxy for archive.org
-                    romUrl = 'https://corsproxy.io/?' + encodeURIComponent(game.romUrl);
+                    // Use AllOrigins proxy which handles archive.org better
+                    romUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(game.romUrl);
                 }
                 
-                // Initialize EmulatorJS with remote ROM
+                // IMPORTANT: Set EmulatorJS config BEFORE loading the script
                 window.EJS_player = '#game';
                 window.EJS_core = core;
                 window.EJS_gameUrl = romUrl;
@@ -250,12 +249,30 @@
                 window.EJS_startOnLoaded = true;
                 window.EJS_color = '#1e90ff';
                 window.EJS_backgroundColor = '#0a0a0a';
+                window.EJS_defaultControls = true;
+                
+                // Hide loading after EmulatorJS takes over
+                loading.style.display = 'none';
                 
                 // Load EmulatorJS
                 const script = document.createElement('script');
                 script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
-                script.onload = () => {
-                    loading.style.display = 'none';
+                script.onerror = () => {
+                    loading.style.display = 'flex';
+                    loading.innerHTML = `
+                        <div class="emulator-placeholder">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Failed to Load Emulator</h3>
+                            <p>Please try refreshing the page or uploading your own ROM.</p>
+                            <label class="btn btn-primary rom-upload">
+                                <i class="fas fa-upload"></i> Upload ROM
+                                <input type="file" id="romUpload" accept=".bin,.md,.smd,.gen,.zip,.iso,.cue" style="display:none">
+                            </label>
+                        </div>
+                    `;
+                    document.getElementById('romUpload')?.addEventListener('change', (e) => {
+                        handleRomUpload(e, core);
+                    });
                 };
                 document.body.appendChild(script);
             } else {
