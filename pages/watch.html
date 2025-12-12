@@ -134,11 +134,12 @@
             const seasonNum = urlParams.get('season');
             
             let content = null;
+            const numericId = parseInt(contentId);
             
             if (contentType === 'series') {
-                content = sonicData.series.find(s => s.id === contentId);
+                content = sonicData.series.find(s => s.id === numericId);
             } else {
-                content = sonicData.movies.find(m => m.id === contentId);
+                content = sonicData.movies.find(m => m.id === numericId);
             }
             
             if (!content) {

@@ -162,7 +162,7 @@
 
         function loadGame() {
             const urlParams = new URLSearchParams(window.location.search);
-            const gameId = urlParams.get('id');
+            const gameId = parseInt(urlParams.get('id'));
             
             const game = sonicData.games.find(g => g.id === gameId);
             
