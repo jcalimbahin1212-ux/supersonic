@@ -52,9 +52,9 @@
             <div class="player-controls">
                 <div class="server-select">
                     <span>Server:</span>
-                    <button class="server-btn active" data-server="1">Server 1</button>
-                    <button class="server-btn" data-server="2">Server 2</button>
-                    <button class="server-btn" data-server="3">Server 3</button>
+                    <button class="server-btn active" data-server="1"><i class="fas fa-cloud"></i> Cloud</button>
+                    <button class="server-btn" data-server="2">VidSrc</button>
+                    <button class="server-btn" data-server="3">Backup</button>
                 </div>
                 <div class="player-actions">
                     <button id="favoriteBtn" class="action-btn"><i class="far fa-heart"></i> Favorite</button>
@@ -292,17 +292,20 @@
                     const playerFrame = document.getElementById('playerFrame');
                     const loading = document.querySelector('.player-loading');
                     
-                    // Get current content
+                    // Get current content (movie or episode)
                     const content = window.currentMovie || window.currentEpisode;
                     if (!content) return;
                     
                     // Switch embed source based on server
                     let embedUrl = null;
                     if (serverNum === '1') {
+                        // Server 1: 2embed (Cloud - cleanest)
                         embedUrl = content.embedUrl;
                     } else if (serverNum === '2') {
+                        // Server 2: vidsrc.xyz (backup)
                         embedUrl = content.embedUrl2 || content.embedUrl;
                     } else if (serverNum === '3') {
+                        // Server 3: vidsrc.icu (fallback)
                         embedUrl = content.embedUrl3 || content.embedUrl;
                     }
                     
