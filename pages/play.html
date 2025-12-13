@@ -230,52 +230,38 @@
             
             // Check if game has a ROM URL (pre-loaded)
             if (game.romUrl && game.romUrl.startsWith('http')) {
-                // Auto-load ROM from URL
-                loading.innerHTML = '<div class="sonic-loader"></div><p>Loading game... This may take a moment.</p>';
-                
-                container.innerHTML = `<div id="game" style="width:100%;height:100%;min-height:480px;"></div>`;
-                
-                // Use CORS proxy for archive.org URLs
-                let romUrl = game.romUrl;
-                if (romUrl.includes('archive.org')) {
-                    // Use AllOrigins proxy which handles archive.org better
-                    romUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(game.romUrl);
-                }
-                
-                // IMPORTANT: Set EmulatorJS config BEFORE loading the script
-                window.EJS_player = '#game';
-                window.EJS_core = core;
-                window.EJS_gameUrl = romUrl;
-                window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-                window.EJS_startOnLoaded = true;
-                window.EJS_color = '#1e90ff';
-                window.EJS_backgroundColor = '#0a0a0a';
-                window.EJS_defaultControls = true;
-                
-                // Hide loading after EmulatorJS takes over
+                // Show embedded emulator with multiple options
                 loading.style.display = 'none';
                 
-                // Load EmulatorJS
-                const script = document.createElement('script');
-                script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
-                script.onerror = () => {
-                    loading.style.display = 'flex';
-                    loading.innerHTML = `
-                        <div class="emulator-placeholder">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <h3>Failed to Load Emulator</h3>
-                            <p>Please try refreshing the page or uploading your own ROM.</p>
-                            <label class="btn btn-primary rom-upload">
+                // Use PlayEmulator.org or similar service that handles ROMs
+                const gameSlug = game.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-');
+                
+                container.innerHTML = `
+                    <div class="emulator-options">
+                        <div class="emulator-frame-container">
+                            <iframe id="emulatorFrame" 
+                                src="https://www.retrogames.cc/embed/41444-sonic-the-hedgehog-world.html"
+                                style="width:100%;height:100%;min-height:500px;border:none;border-radius:10px;"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="emulator-controls-bar">
+                            <button class="btn btn-primary" onclick="loadRetroGames('${game.title}', '${game.emulator}')">
+                                <i class="fas fa-sync"></i> Load Game
+                            </button>
+                            <button class="btn btn-secondary" onclick="openExternalEmulator('${game.romUrl}')">
+                                <i class="fas fa-external-link-alt"></i> Open in External Player
+                            </button>
+                            <label class="btn btn-secondary">
                                 <i class="fas fa-upload"></i> Upload ROM
-                                <input type="file" id="romUpload" accept=".bin,.md,.smd,.gen,.zip,.iso,.cue" style="display:none">
+                                <input type="file" id="romUpload" accept=".bin,.md,.smd,.gen,.zip" style="display:none" onchange="handleRomUpload(event, '${core}')">
                             </label>
                         </div>
-                    `;
-                    document.getElementById('romUpload')?.addEventListener('change', (e) => {
-                        handleRomUpload(e, core);
-                    });
-                };
-                document.body.appendChild(script);
+                    </div>
+                `;
+                
+                // Try to load the correct game
+                loadRetroGames(game.title, game.emulator);
             } else {
                 // Fallback: Show upload prompt for ROM
                 loading.innerHTML = `
@@ -402,6 +388,35 @@
                     }
                 }
             });
+        }
+
+        // Game embed mapping for RetroGames.cc
+        const gameEmbeds = {
+            'Sonic the Hedgehog': 'https://www.retrogames.cc/embed/41444-sonic-the-hedgehog-world.html',
+            'Sonic the Hedgehog 2': 'https://www.retrogames.cc/embed/41445-sonic-the-hedgehog-2-world.html',
+            'Sonic the Hedgehog 3': 'https://www.retrogames.cc/embed/41446-sonic-the-hedgehog-3-usa.html',
+            'Sonic & Knuckles': 'https://www.retrogames.cc/embed/41411-sonic-and-knuckles-world.html',
+            'Sonic 3D Blast': 'https://www.retrogames.cc/embed/41430-sonic-3d-blast-usa-europe.html',
+            'Sonic Spinball': 'https://www.retrogames.cc/embed/41449-sonic-the-hedgehog-spinball-usa.html',
+            "Dr. Robotnik's Mean Bean Machine": 'https://www.retrogames.cc/embed/40930-dr-robotniks-mean-bean-machine-usa-europe.html'
+        };
+
+        function loadRetroGames(gameTitle, emulator) {
+            const frame = document.getElementById('emulatorFrame');
+            if (!frame) return;
+            
+            const embedUrl = gameEmbeds[gameTitle];
+            if (embedUrl) {
+                frame.src = embedUrl;
+            } else {
+                // Default to a search or first game
+                frame.src = gameEmbeds['Sonic the Hedgehog'];
+            }
+        }
+
+        function openExternalEmulator(romUrl) {
+            // Open the ROM in an external player
+            window.open(romUrl, '_blank');
         }
 
         function loadRelatedGames(currentId) {
