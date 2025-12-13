@@ -434,7 +434,7 @@ ul {
     display: none;
 }
 
-.featured-card {
+a.featured-card {
     flex: 0 0 300px;
     height: 400px;
     border-radius: var(--border-radius);
@@ -442,6 +442,9 @@ ul {
     position: relative;
     cursor: pointer;
     transition: var(--transition-normal);
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
 .featured-card img {
